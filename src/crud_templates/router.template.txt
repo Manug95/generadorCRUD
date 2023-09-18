@@ -1,0 +1,35 @@
+const router = require("express").Router();
+const _recurso_Controller = require("../../controladores/controladores_dinamicos/_recurso_.controlador.js");
+const autorizacion = require("../../middlewares/autorizaciones.js");
+
+
+//POST /recurso/ registra nuevo recurso
+router.post("/", autorizacion.crear, _recurso_Controller.crear);
+
+
+//GET /recurso/ Retorna listado de los recursos
+router.get("/", autorizacion.consultar, _recurso_Controller.listar);
+
+
+//GET /recurso/create Muestra formulario para nuevo recurso
+router.get("/create", autorizacion.crear, _recurso_Controller.vistaCrear);
+
+
+//GET /recurso/{id} Retorna datos de un recurso
+router.get("/:id", autorizacion.consultar, _recurso_Controller.traer);
+
+
+//PUT /recurso/{id} Actualiza los datos del recurso
+router.put("/:id", autorizacion.modificar, _recurso_Controller.editar);
+
+
+//DELETE /recurso/{id} Elimina un recurso
+router.delete("/:id", autorizacion.eliminar, _recurso_Controller.eliminar);
+
+
+//GET /recurso/{id}/edit Muestra formulario para editar recurso
+router.get("/:id/edit", autorizacion.modificar, _recurso_Controller.vistaEditar);
+
+
+
+module.exports = router;

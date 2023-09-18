@@ -1,0 +1,21 @@
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../../config/sequelize.js");
+const { validarLongitud } = require("../../server_scripts/validacionesDeModelos.js");
+
+class _NAME_ extends Model {}
+
+_NAME_.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  *atributos*
+}, {
+  sequelize,
+  modelName: "_NAME_",
+  tableName: "_NAME_",
+  timestamps: false
+});
+
+module.exports = _NAME_;

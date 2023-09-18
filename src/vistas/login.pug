@@ -1,0 +1,24 @@
+extends layout.pug
+
+block script
+  script(src="../scripts/login.js", type="module", defer)
+
+block formulario 
+  h1.text-center.mb-3 Iniciar Sesión
+  .container.mt-3 
+    .row 
+      .col-4.offset-4 
+        form#form-login
+          .mb-3.row 
+            label.col-form-label.col-sm-3(for="email") Email 
+            .col-sm-9 
+              input#email.form-control(type="email", aria-describedby="emailInfo", autofocus)
+              #emailInfo.form-text.d-none.text-danger 
+          .mb-3.row 
+            label.col-form-label.col-sm-3(for="password") Contraseña 
+            .col-sm-9 
+              input#password-log.form-control(type="password")
+              #passwordInfo.form-text.d-none.text-danger 
+          button#btn-login.btn.btn-primary(type="button") Iniciar Sesión
+
+  include ./modalMensaje.pug

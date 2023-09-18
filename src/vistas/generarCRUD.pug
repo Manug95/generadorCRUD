@@ -1,0 +1,52 @@
+extends layout.pug
+
+block styles 
+  link(rel="stylesheet", href="../css/estilosGenerarCRUD.css")
+
+block script
+  script(src="scripts/generarCRUD.js", type="module", defer)
+
+block formulario 
+  h1.text-center.m-3 Crear Nuevo Recurso
+
+  .container.mt-3.p-0
+    .row.justify-content-center
+      .col-8.col-md-5.me-4.me-md-0
+        label.form-label(for="nombre-recurso") Nombre del Recurso
+        input.form-control#nombre-recurso(type="text")
+        #nombre-recurso-info.form-text.text-danger.d-none
+      |
+    .row#row-campos 
+
+    .row.mt-3.justify-content-center.justify-content-md-center
+      .col-2.p-0.d-flex.justify-content-center
+        button.col-2.p-0.d-flex.justify-content-center#btn-add(type="button")
+          i.bi.bi-plus-square
+
+    h2.text-center.text-md-start Permisos
+
+    .row.mt-3.flex-column.align-items-center.flex-md-row
+      .col-6.col-md-3
+        select#usuarios.form-select(name="usuarios")
+          option(value="", disabled="disabled", selected="selected") usuario 
+      #div-permisos.col-9.mt-1.d-flex.flex-column.align-items-center.flex-md-row.justify-content-md-evenly.align-items-md-center
+    
+    .row.justify-content-center.mt-5
+      .col-2.d-flex.justify-content-center
+        button#btn-generarcrud.btn.btn-primary(type="button") Generar
+  
+  #modal-enums.modal.fade(data-bs-backdrop="static", data-bs-keyboard="false", tabindex="-1", aria-labelledby="modal-enums-title", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h1#modal-enums-title.modal-title.fs-5
+          button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+        .modal-body
+          label.mt-1(for="nuevo-enum") Enum
+          input#input-enum(type="text")
+          button#btn-add-enum.btn.btn-primary(type="button") OK
+          ul#lista-enums.list-group
+        .modal-footer
+          button.btn.btn-primary(type="button", data-bs-dismiss="modal") Listo
+
+  include ./modalMensaje.pug

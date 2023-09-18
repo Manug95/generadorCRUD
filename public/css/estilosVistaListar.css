@@ -1,0 +1,16 @@
+i {
+    color: black;
+}
+
+i:hover {
+    color: red;
+}
+
+#btn-edit, #btn-del {
+    border-style: none;
+    background-color: transparent;
+}
+
+a {
+    text-decoration: none;
+}

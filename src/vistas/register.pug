@@ -1,0 +1,29 @@
+extends layout.pug 
+
+block script 
+  script(src="../scripts/register.js", type="module", defer)
+
+block formulario 
+  .container.mt-3 
+    h1.text-center.mb-3 Registrar Usuario
+    .row 
+      .col-4.offset-4 
+        form#form-register
+          .mb-3.row 
+            label.col-form-label.col-sm-3(for="email") Email 
+            .col-sm-9 
+              input#email.form-control(type="email", autofocus)
+              #emailInfo.form-text.d-none.text-danger 
+          .mb-3.row 
+            label.col-form-label.col-sm-3(for="password") Contraseña 
+            .col-sm-9 
+              input#password-reg.form-control(type="password")
+              #passwordInfo.form-text.d-none.text-danger 
+          .mb-3.row 
+            label.col-form-label.col-sm-3(for="nombre") Nombre 
+            .col-sm-9 
+              input#nombre.form-control(type="text")
+              #nombreInfo.form-text.d-none.text-danger 
+          button#btn-register.btn.btn-primary(type="button") Registrarse
+  
+  include ./modalMensaje.pug

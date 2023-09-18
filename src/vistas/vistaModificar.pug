@@ -1,0 +1,30 @@
+extends layout.pug
+
+block script
+  script(src="../../../scripts/modificarInstancia.js", type="module", defer)
+
+block formulario 
+  h1.text-center.m-3=tabTitle
+
+  .container.mt-3.p-0
+    .row 
+      .col-6.offset-3  
+        form#form-actualizar
+          each campo in campos 
+            .mb-3.row.align-items-baseline
+              if campo.campo !== "id"
+                label.col-form-label.col-sm-3(for=campo.campo)=campo.campo.toUpperCase()
+              .col-sm-9 
+                if campo.tipoDato === "checkbox"
+                  input.form-check-input(type=campo.tipoDato, id=campo.campo, name=campo.campo, checked=campo.valor)
+                else if Array.isArray(campo.tipoDato)
+                  select(name=campo.campo, id=campo.campo, class="form-select") 
+                    each val in campo.tipoDato
+                      option(value=val, selected=val === campo.valor)=val
+                else 
+                  input.form-control(type=campo.campo==="id" ? "hidden" : campo.tipoDato, id=campo.campo, name=campo.campo, value=campo.valor, , maxlength=campo.tipoDato==="text"?"50":"")
+          .mb-3.row.justify-content-center
+            .col-1 
+              button#btn-actualizar.btn.btn-primary(type="button") Actualizar
+
+  include ./modalMensaje.pug

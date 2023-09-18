@@ -1,0 +1,35 @@
+extends layout.pug
+
+block styles 
+  link(rel="stylesheet", href="../../css/estilosVistaListar.css")
+
+block script
+  script(src="../../scripts/mostrarUno.js", type="module", defer)
+
+block formulario 
+  h1.text-center.m-3=tituloH1
+
+  .container.mt-3.p-0
+    table.table-striped.table
+      thead  
+        tr 
+          each campo in campos 
+            th(scope="col")=campo 
+          th 
+      tbody 
+        tr 
+          each atributo in instancias
+            td=atributo 
+          if instancias.length > 0
+            td.d-flex.justify-content-around
+              a#btn-edit.editar(type="button", href="/recursos/"+recurso+"/"+instancias[0]+"/edit")
+                i.bi.bi-pencil-square
+              button#btn-del.borrar(type="button", disabled=!eliminar)
+                i.bi.bi-trash
+
+    if instancias.length === 0
+      p.text-center.mt-2=error
+
+  include ./modalPregunta.pug
+
+  include ./modalMensaje.pug

@@ -1,0 +1,11 @@
+#modal-pregunta.modal.fade.modal-sm(tabindex="-1", aria-labelledby="titulo-modal", aria-hidden="true")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        #titulo-modal.modal-title.fs-5 Alerta
+        button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+      .modal-body.justify-content-center.align-items-center
+        p.text-center ¿Está seguro de eliminar el registro?
+      .modal-footer.justify-content-around
+        button#btn-si.btn.btn-primary(type="button") SI
+        button#btn-no.btn.btn-secondary(type="button", data-bs-dismiss="modal") NO

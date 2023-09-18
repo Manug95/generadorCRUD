@@ -1,0 +1,216 @@
+const pug = require("pug");
+const _Recurso_ = require(`../../modelos/modelos_dinamicos/_Recurso_.model.js`);
+const path = require("path");
+const { tipoDatoParaLosFormInputs, validarParametroID } = require("../../server_scripts/validacionesDeModelos.js");
+
+
+exports.crear = async function(req, res) {
+  try {
+    const datos = req.body;
+
+    const nuevoRecurso = await _Recurso_.create(datos);
+
+    res.status(201).json({
+      ok: true,
+      status: 201,
+      mensaje:"Registro de _Recurso_ creado con exito"
+    });
+  }
+  catch (error) {
+    res.status(400).json({
+      ok: false,
+      status: 400,
+      mensaje: error.message | "El registro no se pudo crear"
+    });
+  }
+}
+
+exports.listar = async function(req, res) {
+  try {
+    const recursos = await _Recurso_.findAll();
+
+    const campos = Object.entries(_Recurso_.getAttributes()).map(atrib => atrib[0]);
+
+    const valoresDeLasInstancias = recursos.map(u => {
+      return campos.map(c => u[c]);
+    });
+
+    const resultado = pug.renderFile("src/vistas/vistaListar.pug", {
+      campos: campos,
+      instancias: valoresDeLasInstancias,
+      tabTitle: "Listar _Recurso_",
+      pretty: true,
+      recurso: "_recurso_",
+      tituloH1: "Lista del recurso _recurso_",
+      eliminar: req.eliminar,
+      error: "NO HAY RESULTADOS"
+    });
+
+    res.send(resultado);
+  }
+  catch (error) {
+    res.status(400).json({
+      ok: false,
+      status: 400,
+      mensaje:"Los registros no se pudieron recuperar",
+      body: null
+    });
+  }
+}
+
+exports.traer = async function(req, res) {
+  try {
+    const id = req.params.id;
+
+    validarParametroID(id);
+
+    const recurso = await _Recurso_.findByPk(id);
+
+    const campos = Object.entries(_Recurso_.getAttributes()).map(u => u[0]);
+
+    const valores = [];
+    if (recurso) {
+      valores.push(...campos.map(c => recurso[c]));
+    }
+
+    const resultado = pug.renderFile("src/vistas/vistaMostrarUno.pug", {
+      campos: campos,
+      instancias: valores,
+      tabTitle: "_Recurso_",
+      pretty: true,
+      tituloH1: "Resultado de la busqueda de _recurso_",
+      eliminar: req.eliminar,
+      recurso: "_recurso_",
+      error: "NO HAY RESULTADOS PARA EL RECURSO '_Recurso_' CON ID " + id
+    });
+
+  res.send(resultado);
+
+  } catch (error) {
+    if (error.message.includes("ID")) {
+      res.status(400).sendFile("error-404.html", { root: path.join(__dirname, '..', '..', 'vistas', 'errores') }, (error) => {
+        res.status = 500;
+        res.end();
+      });
+    }
+    else {
+      res.status(400).json({
+        ok: false,
+        status: 400,
+        mensaje:"Registro no encontrado",
+        body: null
+      });
+    }
+  }
+}
+
+exports.editar = async function(req, res) {
+  try {
+    const id = req.params.id;
+
+    validarParametroID(id);
+
+    const recurso = req.body;
+
+    const recursoEditado = await _Recurso_.update(recurso, {where: { id: id}});
+
+    res.status(200).json({
+      ok: true,
+      status: 200,
+      mensaje:"Registro editado con exito"
+    });
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      status: 400,
+      mensaje: error.message //"El registro no se pudo editar"
+    });
+  }
+}
+
+exports.eliminar = async function(req, res) {
+  try {
+    const id = req.params.id;
+
+    validarParametroID(id);
+
+    const recursoBorrado = await _Recurso_.destroy({where: {id: id}});
+
+    res.status(200).json({
+      ok: true,
+      status: 204,
+      mensaje:"Registro eliminado con exito"
+    });
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      status: 400,
+      mensaje:"El registro no se pudo eliminar"
+    });
+  }
+}
+
+exports.vistaCrear = function(req ,res) {
+  const datos = Object.entries(_Recurso_.getAttributes())
+  .filter(a => a[0] !== "id")
+  .map(a => {
+    const tipo = tipoDatoParaLosFormInputs(a[1].type);
+    return {
+      campo: a[0],
+      tipoDato:  tipo === "enum" ? a[1].type.values : tipo
+    }
+  });
+
+  res.send(pug.renderFile("src/vistas/vistaCrear.pug", {
+    pretty: true,
+    campos: datos,
+    tabTitle: `Crear _Recurso_`,
+    nombre: "_recurso_"
+  }));
+}
+
+exports.vistaEditar = async function(req, res) {
+  try {
+    const id = req.params.id;
+
+    validarParametroID(id);
+
+    const recurso = await _Recurso_.findByPk(id);
+
+    if (!recurso) {
+      throw new Error("El registro no existe");
+    }
+
+    const datos = Object.entries(recurso.rawAttributes)
+    .map(a => {
+      const tipo = tipoDatoParaLosFormInputs(a[1].type);
+      return {
+        campo: a[0],
+        tipoDato:  tipo === "enum" ? a[1].type.values : tipo,
+        valor: recurso[a[0]]
+      }
+    });
+
+    res.send(pug.renderFile("src/vistas/vistaModificar.pug", {
+      pretty: true,
+      campos: datos,
+      tabTitle: "Modoficar _recurso_",
+      nombre: "_recurso_"
+    }));
+
+  } catch (error) {
+    if (error.message.includes("ID")) {
+      res.status(400).sendFile("error-404.html", { root: path.join(__dirname, '..', '..', 'vistas', 'errores') }, (error) => {
+        res.status = 500;
+        res.end();
+      });
+    }
+    else {
+      res.status(400).json({
+        ok: false,
+        status: 400,
+        mensaje: error.message
+      });
+    }
+  }
+}

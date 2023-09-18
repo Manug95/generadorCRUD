@@ -1,0 +1,30 @@
+extends layout.pug
+
+block script
+  script(src="../../scripts/guardarInstancia.js", type="module", defer)
+
+block formulario 
+  h1.text-center.m-3 Crear #{nombre}
+
+  .container.mt-3.p-0
+    .row 
+      .col-6.offset-3  
+        form#form-crear
+          each campo in campos 
+            .mb-3.row.align-items-baseline
+              label.col-form-label.col-sm-3(for=campo.campo)=campo.campo.toUpperCase()
+              .col-sm-9 
+                if campo.tipoDato === "checkbox"
+                  input.form-check-input(type=campo.tipoDato, id=campo.campo, name=campo.campo)
+                else if Array.isArray(campo.tipoDato)
+                  select(name=campo.campo, id=campo.campo, class="form-select") 
+                    option(value="", selected="selected", disabled="disabled") Seleccione un valor
+                    each val in campo.tipoDato
+                      option(value=val)=val  
+                else 
+                  input.form-control(type=campo.tipoDato, id=campo.campo, name=campo.campo, maxlength=campo.tipoDato==="text"?"50":"")
+          .mb-3.row.justify-content-center
+            .col-1 
+              button#btn-crear.btn.btn-primary(type="button") Crear
+
+  include ./modalMensaje.pug

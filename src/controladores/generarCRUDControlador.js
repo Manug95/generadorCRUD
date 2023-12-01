@@ -10,7 +10,8 @@ const { Usuario, Recursos, Acceso } = require("../modelos/relaciones");
 exports.vistaGenerarCRUD = async function(req, res) {
 	res.send(pug.renderFile("src/vistas/generarCRUD.pug", {
     pretty: true,
-    tabTitle: `Generar CRUD`
+    tabTitle: `Generar CRUD`,
+    logeado: req.session?.sesion
   }));
 }
 

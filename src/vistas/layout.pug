@@ -18,4 +18,24 @@ html(lang="es")
 
     title=tabTitle 
   body
+  
+    nav.navbar.navbar-expand-lg.bg-body-tertiary 
+      .container-fluid 
+        a.navbar-brand(href="#") Inicio 
+        //- button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        //-   span.navbar-toggler-icon
+        .collapse.navbar-collapse.d-flex-flex.justify-content-between(id="navbarNav")
+          ul.navbar-nav
+            //- li.nav-item 
+            //-   a.nav-link.active(aria-current="page", href="#") Home 
+            li.nav-item 
+              a.nav-link(href="/generarCRUD") Nuevo Recurso 
+          ul.navbar-nav
+            if !logeado
+              li.nav-item.flex-end 
+                a.btn.btn-primary(href="usuarios/login") Iniciar Sesión 
+            if logeado 
+              li.nav-item.flex-end 
+                a.btn.btn-primary(href="usuarios/salir") Salir 
+
     block formulario

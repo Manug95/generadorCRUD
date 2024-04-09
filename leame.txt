@@ -1,0 +1,30 @@
+localhost:3000
+
+RUTAS USUARIOS
+usuarios/register
+usuarios/login
+usuarios/salir
+
+RUTA generarCRUD
+/generarCRUD
+
+RUTAS RECURSOS
+recursos/recurso/{id} 			Retorna datos de un recurso
+recursos/recurso/create 		Muestra formulario para nuevo recurso
+recursos/recurso/ 			Retorna listado de los recursos
+recursos/recurso/{id}/edit 		Muestra formulario para editar recurso
+
+
+
+CONTRASEÑAS USUARIOS CREADOS
+mail: manuel@gmail.com
+pass: manuel
+
+mail: lucy@gmail.com
+pass: lucy
+
+mail: pochoclo@gmail.com
+pass: pochoclo
+
+
+NOTA: como en la forma de entrega del proyecto no dice que puerto usar para la BD lo deje en el puerto 3306, para cambialo es en el archivo src/config/sequelize.js
